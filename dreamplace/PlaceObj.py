@@ -399,7 +399,13 @@ class PlaceObj(nn.Module):
         """
         @brief Compute objective with current locations of cells.
         """
-        return self.obj_fn(self.data_collections.pos[0])
+        # PTM
+        rounded = self.data_collections.pos[0]
+        y_beg = self.placedb.num_nodes
+        y_end = self.placedb.num_nodes + self.placedb.num_physical_nodes
+        rounded[y_beg:y_end] = torch.round(rounded[y_beg:y_end] / self.placedb.row_height) * self.placedb.row_height
+        return self.obj_fn(rounded)
+        # return self.obj_fn(self.data_collections.pos[0])
 
     def check_gradient(self, pos):
         """
