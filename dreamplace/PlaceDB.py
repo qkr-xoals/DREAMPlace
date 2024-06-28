@@ -1002,6 +1002,9 @@ row height = %g, site width = %g
         # unscale locations
         node_x, node_y = self.unscale_pl(params.shift_factor, params.scale_factor)
 
+        # PTM
+        node_y = torch.round(node_y / self.row_height) * self.row_height 
+
         # Global placement may have floating point positions.
         # Currently only support BOOKSHELF format.
         # This is mainly for debug.

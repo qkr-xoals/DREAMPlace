@@ -1124,6 +1124,11 @@ class BasicPlace(nn.Module):
         os.system("mkdir -p %s" % (os.path.dirname(figname)))
         if isinstance(pos, np.ndarray):
             pos = torch.from_numpy(pos)
+        # PTM
+        y_beg = placedb.num_nodes
+        y_end = placedb.num_nodes + placedb.num_physical_nodes
+        pos[y_beg:y_end] = torch.round(pos[y_beg:y_end] / placedb.row_height) * placedb.row_height
+        
         self.op_collections.draw_place_op(pos, figname)
         logging.info("plotting to %s takes %.3f seconds" %
                      (figname, time.time() - tt))
